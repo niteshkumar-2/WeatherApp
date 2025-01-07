@@ -1,0 +1,56 @@
+<h1 class="title">Weather App</h1>
+<div class="weather-container">
+  <div class="card-container">
+    <div class="search-card">
+      <div class="search-container">
+        <div class="country-selector">
+          <label for="countrySelect">Select Country</label>
+          <select
+            [(ngModel)]="selectedCountry"
+            (change)="onCountryChange()"
+            id="countrySelect"
+          >
+            <option *ngFor="let country of countries" [value]="country">
+              {{ country }}
+            </option>
+          </select>
+        </div>
+
+        <input
+          type="text"
+          placeholder="Enter city name"
+          [(ngModel)]="city"
+          (input)="onCityInput($event)"
+          class="city-input"
+        />
+
+        <div *ngIf="error" class="error">*{{ error }}</div>
+        <ul *ngIf="suggestions.length" class="suggestions">
+          <li
+            *ngFor="let suggestion of suggestions"
+            (click)="selectCity(suggestion)"
+          >
+            {{ suggestion }}
+          </li>
+        </ul>
+        <button (click)="getWeather()" class="search-btn">Get Weather</button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="weatherData"
+      class="weather-card"
+      [ngStyle]="getWeatherBackground()"
+    >
+      <h2>
+        Weather in {{ weatherData.location.name }},
+        {{ weatherData.location.region }}, {{ weatherData.location.country }}
+      </h2>
+      <p>Temperature: {{ weatherData.current.temp_c }}°C</p>
+      <p>
+        Current Time:
+        {{ weatherData.location.localtime_epoch * 1000 | date : "medium" }}
+      </p>
+    </div>
+  </div>
+</div>
